@@ -23,7 +23,7 @@ async function fetchStockData(symbol) {
             .then(response => response.json())
             .then(data => console.log('Response from the function:', data))
             .catch(error => console.error('Error:', error));
-        const data = await response.json();
+        const data = resposne;
         const rollingEarnings = calculateRollingEarnings(data.quarterlyEarnings);
         console.log(rollingEarnings);
         return rollingEarnings;
