@@ -1,12 +1,28 @@
-// Replace YOUR_API_KEY with your actual Alpha Vantage API key
-const apiKey = '';
+
 const symbol = 'AAPL'; // Example stock symbol, you can make this dynamic
+const baseUrl = '/.netlify/functions/fetch-data';
+
+// Construct the full URL with query parameters
+
+
 
 // Fetches stock data from Alpha Vantage
 async function fetchStockData(symbol) {
-    const url = `https://www.alphavantage.co/query?function=EARNINGS&symbol=${symbol}&apikey=${apiKey}`;
+    //const url = `https://www.alphavantage.co/query?function=EARNINGS&symbol=${symbol}&apikey=${apiKey}`;
+    
+    const queryParams = new URLSearchParams({
+        function: 'EARNINGS',
+        symbol: symbol
+      });
+    
+    const urlWithParams = `${baseUrl}?${queryParams.toString()}`;
+
     try {
-        const response = await fetch(url);
+        // Make the fetch request to the Netlify function
+        fetch(urlWithParams)
+            .then(response => response.json())
+            .then(data => console.log('Response from the function:', data))
+            .catch(error => console.error('Error:', error));
         const data = await response.json();
         const rollingEarnings = calculateRollingEarnings(data.quarterlyEarnings);
         console.log(rollingEarnings);
@@ -76,6 +92,16 @@ function calculateRollingEarnings(quarterlyEarnings) {
 
     return rollingTotals;
 }
+
+
+
+// Define your query parameters
+const queryParams = new URLSearchParams({
+  userId: '123',
+  type: 'example'
+});
+
+
 
 
 
