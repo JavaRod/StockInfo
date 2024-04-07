@@ -19,11 +19,7 @@ async function fetchStockData(symbol) {
 
     try {
         // Make the fetch request to the Netlify function
-        fetch(urlWithParams)
-            .then(response => response.json())
-            .then(data => console.log('Response from the function:', data))
-            .catch(error => console.error('Error:', error));
-        const data = response;
+        const data = await fetchData(urlWithParams);
         const rollingEarnings = calculateRollingEarnings(data.quarterlyEarnings);
         console.log(rollingEarnings);
         return rollingEarnings;
@@ -33,6 +29,18 @@ async function fetchStockData(symbol) {
     }
 }
 
+async function fetchData(urlWithParams) {
+    try {
+      const response = await fetch(urlWithParams);
+      const data = await response.json();
+      console.log('Response from the function:', data);
+      // Now you can return 'data' or do something else with it here
+      return data; // For later use
+    } catch (error) {
+      console.error('Error:', error);
+    }
+  }
+  
 // Processes the fetched data and displays the chart
 async function displayChart() {
     console.log("Display chart");
